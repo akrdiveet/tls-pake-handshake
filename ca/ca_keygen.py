@@ -2,6 +2,7 @@ from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography import x509
 from cryptography.x509.oid import NameOID
+from datetime import timezone
 import datetime, os
 
 os.makedirs("ca", exist_ok=True)
@@ -16,8 +17,8 @@ ca_cert = (
     .issuer_name(ca_name)
     .public_key(ca_key.public_key())
     .serial_number(x509.random_serial_number())
-    .not_valid_before(datetime.datetime.utcnow())
-    .not_valid_after(datetime.datetime.utcnow() + datetime.timedelta(days=3650))
+    .not_valid_before(datetime.datetime.now(timezone.utc))
+    .not_valid_after(datetime.datetime.now(timezone.utc) + datetime.timedelta(days=3650))
     .add_extension(x509.BasicConstraints(ca=True, path_length=None), critical=True)
     .sign(ca_key, hashes.SHA256())
 )
@@ -41,8 +42,8 @@ server_cert = (
     .issuer_name(ca_cert.subject)
     .public_key(csr.public_key())
     .serial_number(x509.random_serial_number())
-    .not_valid_before(datetime.datetime.utcnow())
-    .not_valid_after(datetime.datetime.utcnow() + datetime.timedelta(days=365))
+    .not_valid_before(datetime.datetime.now(timezone.utc))
+    .not_valid_after(datetime.datetime.now(timezone.utc) + datetime.timedelta(days=365))
     .sign(ca_key, hashes.SHA256())
 )
 with open("server/server_key.pem", "wb") as f:

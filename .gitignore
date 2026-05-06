@@ -1,0 +1,18 @@
+# Virtual environment
+venv/
+
+# User database (contains credentials)
+db/users.json
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Generated keys (keep certs but skip private keys optionally)
+# Uncomment below if you want to exclude private keys from GitHub:
+# server/server_key.pem
+# ca/ca_key.pem
+
+# macOS
+.DS_Store
